@@ -123,9 +123,8 @@ public static class DbSeeder
                 csv.Read();
                 csv.ReadHeader();
                 
-                // Wczytaj tylko pierwsze 50 rekordów, aby uniknąć problemów z wydajnością
                 int counter = 0;
-                int maxRecords = 50;
+                int maxRecords = int.MaxValue;
                 
                 while (csv.Read() && counter < maxRecords)
                 {
