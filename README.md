@@ -9,7 +9,6 @@ REST-owe API do zarządzania bazą partii szachowych, napisane w ASP.NET Core 8 
 2. [Import danych z CSV](#import-danych-z-csv)
 3. [Uruchomienie aplikacji](#uruchomienie-aplikacji)
 4. [Autoryzacja](#autoryzacja)
-5. [Dokumentacja OpenAPI](#dokumentacja-openapi)
 
 ---
 
@@ -50,8 +49,20 @@ Plik [DbSeeder.cs] automatycznie wypełnia bazę danymi przy starcie aplikacji (
   
 ### Kroki
 
-```bash
+``bash
 git clone [https://github.com/DawidChorazy/onlineChessAPI.git](https://github.com/DawidChorazy/onlineChessAPI.git)
 cd onlineChessAPI
 dotnet restore
-dotnet run --project onlineChessAPI```
+dotnet run --project onlineChessAPI``
+
+## 🔐 JWT Autoryzacja
+
+Ten projekt pokazuje, **jak zalogować użytkownika i uzyskać token JWT**, a potem **jak korzystać z tego tokena do dostępu do chronionych endpointów**.
+
+---
+
+## 👤 Dane użytkownika
+1. **Użytkownik wysyła login i hasło na `/login`**
+2. **Jeśli dane są poprawne, API odsyła token JWT**
+3. **Użytkownik używa tokena jako nagłówka wpisując `Bearer <token>` (na przykład: Bearer "token": "eyJhbGciOiJIUzI1NiIsInR...")**
+4. **Chronione endpointy działają tylko z ważnym tokenem**
