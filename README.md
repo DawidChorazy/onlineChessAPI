@@ -1,4 +1,4 @@
-## API STWORZONE PRZEZ: RADOSŁAW CYBORON, SZYMON ADAMSKI, DAWID CHORĄŻY
+## ONLINECHESSAPI STWORZONE PRZEZ: RADOSŁAW CYBORON, SZYMON ADAMSKI, DAWID CHORĄŻY 
 
 # OnlineChessAPI
 
@@ -38,3 +38,20 @@ Plik [DbSeeder.cs] automatycznie wypełnia bazę danymi przy starcie aplikacji (
    * Ścieżka:  `../../../../chess_games.csv`  
 
 3. **Komentarze** – generowane przykładowe do pierwszych 5 partii.
+4. Aby ponownie zasiać dane, usuń plik bazy (lub w przypadku In-Memory – zrestartuj aplikację).
+
+---
+
+## Uruchomienie aplikacji
+
+### Wymagania
+* .NET 8 SDK  
+* (Opcjonalnie) IDE: Visual Studio 2022 / JetBrains Rider / VS Code
+  
+### Kroki
+
+```bash
+git clone [https://github.com/DawidChorazy/onlineChessAPI.git](https://github.com/DawidChorazy/onlineChessAPI.git)
+cd onlineChessAPI
+dotnet restore
+dotnet run --project onlineChessAPI```
