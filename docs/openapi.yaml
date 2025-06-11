@@ -1,0 +1,165 @@
+openapi: 3.0.3
+info:
+  title: OnlineChessAPI
+  description: |
+    REST-owe API do przeglądania, dodawania oraz komentowania partii szachowych.
+    Autoryzacja odbywa się za pomocą JWT (Bearer Token).
+  version: 1.0.0
+servers:
+  - url: https://localhost:5214
+    description: Środowisko lokalne (HTTPS)
+security:
+  - Bearer: []          # endpointy chronione
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /api/Auth/register:
+    post:
+      summary: Rejestracja nowego użytkownika
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+      responses:
+        '200':
+          description: Ok – zwraca token JWT
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSuccess'
+        '400':
+          description: Błędne dane
+  /api/Auth/login:
+    post:
+      summary: Logowanie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        '200':
+          description: Ok – zwraca token JWT
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSuccess'
+        '401':
+          description: Niepoprawny login lub hasło
+  /api/ChessGames:
+    get:
+      summary: Lista partii (paginacja, sort, filtr)
+      parameters:
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - name: sortBy
+          in: query
+          schema: { type: string }
+          description: Przykładowo `-turns` (minus = malejąco)
+        - name: filterBy
+          in: query
+          schema: { type: string }
+          description: Np. `winner=white`
+      responses:
+        '200':
+          description: Strona wyników
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedChessGameDto'
+  /api/ChessGames/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: integer, format: int32 }
+    get:
+      summary: Szczegóły partii
+      responses:
+        '200':
+          description: Partia
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChessGameDto'
+        '404': { description: Nie znaleziono }
+    put:
+      summary: Aktualizacja partii
+      security:
+        - Bearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChessGameDto'
+      responses:
+        '204': { description: Zaktualizowano }
+    delete:
+      summary: Usunięcie partii
+      security:
+        - Bearer: []
+      responses:
+        '204': { description: Usunięto }
+components:
+  parameters:
+    PageNumber:
+      name: pageNumber
+      in: query
+      schema: { type: integer, minimum: 1, default: 1 }
+    PageSize:
+      name: pageSize
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 10 }
+  schemas:
+    UserRegister:
+      type: object
+      required: [username,email,password]
+      properties:
+        username: { type: string }
+        email:    { type: string, format: email }
+        password: { type: string, format: password }
+    UserLogin:
+      type: object
+      required: [username,password]
+      properties:
+        username: { type: string }
+        password: { type: string, format: password }
+    AuthSuccess:
+      type: object
+      properties:
+        token: { type: string }
+        user:
+          type: object
+          properties:
+            id: { type: integer }
+            username: { type: string }
+            email: { type: string }
+    ChessGameDto:
+      # skrócone; pełna lista właściwości z DTO
+      type: object
+      properties:
+        gameId: { type: integer }
+        rated:  { type: boolean }
+        turns:  { type: integer }
+        winner: { type: string }
+        moves:  { type: string }
+    PagedChessGameDto:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/ChessGameDto' }
+        totalCount: { type: integer }
+        pageSize:   { type: integer }
+        currentPage:{ type: integer }
+        links:
+          type: object
+          additionalProperties: { type: string }
