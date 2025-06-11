@@ -23,10 +23,17 @@ public class TokenService
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Username)
         };
-        
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-            _configuration["JWT:Secret"] ?? throw new InvalidOperationException("JWT Secret not configured")));
-            
+        //
+        var rawSecret = _configuration["JWT:Secret"] ?? throw new InvalidOperationException("JWT Secret not configured");
+
+
+        if (rawSecret.Length < 64)
+        {
+            rawSecret = rawSecret.PadRight(64, '0');
+        }
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(rawSecret));
+        //    
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
         
         var tokenDescriptor = new SecurityTokenDescriptor
