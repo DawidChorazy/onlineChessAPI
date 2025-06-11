@@ -55,7 +55,7 @@ cd onlineChessAPI
 dotnet restore
 dotnet run --project onlineChessAPI``
 
-## 🔐 JWT Autoryzacja
+## Autoryzacja
 
 Ten projekt pokazuje, **jak zalogować użytkownika i uzyskać token JWT**, a potem **jak korzystać z tego tokena do dostępu do chronionych endpointów**.
 
