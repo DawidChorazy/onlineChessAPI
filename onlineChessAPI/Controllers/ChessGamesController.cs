@@ -26,63 +26,67 @@ public class ChessGamesController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetGames([FromQuery] PaginationDto paginationDto, 
-                                           [FromQuery] string? sortBy = null,
-                                           [FromQuery] string? filterBy = null)
+public async Task<IActionResult> GetGames([FromQuery] PaginationDto paginationDto, 
+                                       [FromQuery] string? sortBy = null,
+                                       [FromQuery] string? filterBy = null)
+{
+    var pagedGames = await _gameRepository.GetGamesAsync(paginationDto, sortBy, filterBy);
+    
+    pagedGames.Links.Clear();
+    
+    var prevPageNumber = pagedGames.HasPrevious ? pagedGames.CurrentPage - 1 : pagedGames.CurrentPage;
+    var nextPageNumber = pagedGames.HasNext ? pagedGames.CurrentPage + 1 : pagedGames.CurrentPage;
+
+    var queryParams = GetQueryParams(sortBy, filterBy);
+
+    if (!pagedGames.Links.ContainsKey("self"))
     {
-        var pagedGames = await _gameRepository.GetGamesAsync(paginationDto, sortBy, filterBy);
-        
-        // Add HATEOAS links
-        var prevPageNumber = pagedGames.HasPrevious ? pagedGames.CurrentPage - 1 : pagedGames.CurrentPage;
-        var nextPageNumber = pagedGames.HasNext ? pagedGames.CurrentPage + 1 : pagedGames.CurrentPage;
-        
-        var queryParams = GetQueryParams(sortBy, filterBy);
-        
         pagedGames.Links.Add("self", $"{_baseUrl}/api/ChessGames?pageNumber={pagedGames.CurrentPage}&pageSize={pagedGames.PageSize}{queryParams}");
-        
-        if (pagedGames.HasPrevious)
-        {
-            pagedGames.Links.Add("previous", $"{_baseUrl}/api/ChessGames?pageNumber={prevPageNumber}&pageSize={pagedGames.PageSize}{queryParams}");
-        }
-        
-        if (pagedGames.HasNext)
-        {
-            pagedGames.Links.Add("next", $"{_baseUrl}/api/ChessGames?pageNumber={nextPageNumber}&pageSize={pagedGames.PageSize}{queryParams}");
-        }
-        
-        // Convert to DTOs
-        var games = pagedGames.Items.Select(game => new ChessGameDto
-        {
-            GameId = game.GameId,
-            Rated = game.Rated,
-            Turns = game.Turns,
-            VictoryStatus = game.VictoryStatus,
-            Winner = game.Winner,
-            TimeIncrement = game.TimeIncrement,
-            WhiteId = game.WhiteId,
-            WhiteRating = game.WhiteRating,
-            BlackId = game.BlackId,
-            BlackRating = game.BlackRating,
-            Moves = game.Moves,
-            OpeningCode = game.OpeningCode,
-            OpeningMoves = game.OpeningMoves,
-            OpeningFullname = game.OpeningFullname,
-            OpeningShortname = game.OpeningShortname,
-            OpeningResponse = game.OpeningResponse,
-            OpeningVariation = game.OpeningVariation
-        });
-        
-        var result = new PagedListDto<ChessGameDto>(
-            games, 
-            pagedGames.TotalCount, 
-            pagedGames.PageSize, 
-            pagedGames.CurrentPage)
-        {
-            Links = pagedGames.Links
-        };
-        
-        return Ok(result);
     }
+
+    if (pagedGames.HasPrevious && !pagedGames.Links.ContainsKey("previous"))
+    {
+        pagedGames.Links.Add("previous", $"{_baseUrl}/api/ChessGames?pageNumber={prevPageNumber}&pageSize={pagedGames.PageSize}{queryParams}");
+    }
+
+    if (pagedGames.HasNext && !pagedGames.Links.ContainsKey("next"))
+    {
+        pagedGames.Links.Add("next", $"{_baseUrl}/api/ChessGames?pageNumber={nextPageNumber}&pageSize={pagedGames.PageSize}{queryParams}");
+    }
+    
+    var games = pagedGames.Items.Select(game => new ChessGameDto
+    {
+        GameId = game.GameId,
+        Rated = game.Rated,
+        Turns = game.Turns,
+        VictoryStatus = game.VictoryStatus,
+        Winner = game.Winner,
+        TimeIncrement = game.TimeIncrement,
+        WhiteId = game.WhiteId,
+        WhiteRating = game.WhiteRating,
+        BlackId = game.BlackId,
+        BlackRating = game.BlackRating,
+        Moves = game.Moves,
+        OpeningCode = game.OpeningCode,
+        OpeningMoves = game.OpeningMoves,
+        OpeningFullname = game.OpeningFullname,
+        OpeningShortname = game.OpeningShortname,
+        OpeningResponse = game.OpeningResponse,
+        OpeningVariation = game.OpeningVariation
+    });
+
+    var result = new PagedListDto<ChessGameDto>(
+        games,
+        pagedGames.TotalCount,
+        pagedGames.PageSize,
+        pagedGames.CurrentPage)
+    {
+        Links = pagedGames.Links
+    };
+
+    return Ok(result);
+}
+
     
     [HttpGet("{id}")]
     public async Task<IActionResult> GetGame(int id)
@@ -165,7 +169,6 @@ public class ChessGamesController : ControllerBase
             return NotFound();
         }
         
-        // Update game properties
         game.Rated = gameDto.Rated;
         game.Turns = gameDto.Turns;
         game.VictoryStatus = gameDto.VictoryStatus;

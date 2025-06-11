@@ -39,7 +39,6 @@ public class CommentsController : ControllerBase
         
         var pagedComments = await _commentRepository.GetCommentsByGameIdAsync(gameId, paginationDto);
         
-        // Add HATEOAS links
         var prevPageNumber = pagedComments.HasPrevious ? pagedComments.CurrentPage - 1 : pagedComments.CurrentPage;
         var nextPageNumber = pagedComments.HasNext ? pagedComments.CurrentPage + 1 : pagedComments.CurrentPage;
         
@@ -55,7 +54,6 @@ public class CommentsController : ControllerBase
             pagedComments.Links.Add("next", $"{_baseUrl}/api/games/{gameId}/comments?pageNumber={nextPageNumber}&pageSize={pagedComments.PageSize}");
         }
         
-        // Convert to DTOs
         var comments = pagedComments.Items.Select(comment => new CommentDto
         {
             Id = comment.Id,
@@ -116,7 +114,6 @@ public class CommentsController : ControllerBase
             return NotFound("Game not found");
         }
         
-        // Get current user ID if authenticated
         int? userId = null;
         if (User.Identity?.IsAuthenticated == true)
         {
@@ -157,7 +154,6 @@ public class CommentsController : ControllerBase
             return NotFound("Comment not found");
         }
         
-        // Only the comment owner can update it
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
         
         if (comment.UserId != userId)
@@ -193,7 +189,6 @@ public class CommentsController : ControllerBase
             return NotFound("Comment not found");
         }
         
-        // Only the comment owner can delete it
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
         
         if (comment.UserId != userId)

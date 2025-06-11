@@ -18,7 +18,6 @@ public class Comment
     
     public DateTime? UpdatedAt { get; set; }
     
-    // Navigation properties
     public ChessGame? Game { get; set; }
     public User? User { get; set; }
 }

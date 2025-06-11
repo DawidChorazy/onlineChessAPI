@@ -24,7 +24,6 @@ public class User
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
-    // Navigation properties
     public ICollection<ChessGame> WhiteGames { get; set; } = new List<ChessGame>();
     public ICollection<ChessGame> BlackGames { get; set; } = new List<ChessGame>();
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineChessAPI.Core", "Onli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineChessAPI.Infrastructure", "OnlineChessAPI.Infrastructure\OnlineChessAPI.Infrastructure.csproj", "{6871E616-3E95-42B3-A6EC-F3BB0F4BEE41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineChessAPI.Tests", "OnlineChessAPI.Tests\OnlineChessAPI.Tests.csproj", "{63804B90-FB41-4B4E-9A5E-D1854ADA4302}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,5 +27,9 @@ Global
 		{6871E616-3E95-42B3-A6EC-F3BB0F4BEE41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6871E616-3E95-42B3-A6EC-F3BB0F4BEE41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6871E616-3E95-42B3-A6EC-F3BB0F4BEE41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63804B90-FB41-4B4E-9A5E-D1854ADA4302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63804B90-FB41-4B4E-9A5E-D1854ADA4302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63804B90-FB41-4B4E-9A5E-D1854ADA4302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63804B90-FB41-4B4E-9A5E-D1854ADA4302}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

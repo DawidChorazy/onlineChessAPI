@@ -21,11 +21,9 @@ public class ChessGameRepository : IChessGameRepository
             .Include(g => g.WhiteUser)
             .Include(g => g.BlackUser)
             .AsQueryable();
-            
-        // Apply filtering if provided
+        
         if (!string.IsNullOrWhiteSpace(filterBy))
         {
-            // Parse filterBy string (format: "property=value")
             var filterParts = filterBy.Split('=');
             if (filterParts.Length == 2)
             {
@@ -46,7 +44,6 @@ public class ChessGameRepository : IChessGameRepository
             }
         }
         
-        // Apply sorting if provided
         if (!string.IsNullOrWhiteSpace(sortBy))
         {
             var isDescending = sortBy.StartsWith("-");
@@ -71,14 +68,11 @@ public class ChessGameRepository : IChessGameRepository
         }
         else
         {
-            // Default sorting by GameId
             query = query.OrderBy(g => g.GameId);
         }
         
-        // Get total count before pagination
         var totalCount = await query.CountAsync();
         
-        // Apply pagination
         var items = await query
             .Skip((paginationDto.PageNumber - 1) * paginationDto.PageSize)
             .Take(paginationDto.PageSize)

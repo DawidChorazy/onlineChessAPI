@@ -22,11 +22,9 @@ public class CommentRepository : ICommentRepository
             .Where(c => c.GameId == gameId)
             .OrderByDescending(c => c.CreatedAt)
             .AsQueryable();
-            
-        // Get total count before pagination
+        
         var totalCount = await query.CountAsync();
         
-        // Apply pagination
         var items = await query
             .Skip((paginationDto.PageNumber - 1) * paginationDto.PageSize)
             .Take(paginationDto.PageSize)

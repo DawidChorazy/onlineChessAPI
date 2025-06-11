@@ -18,7 +18,6 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         
-        // Apply configurations
         modelBuilder.ApplyConfiguration(new ChessGameConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new CommentConfiguration());

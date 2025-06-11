@@ -32,7 +32,6 @@ public class ChessGame
     public string? OpeningResponse { get; set; }
     public string? OpeningVariation { get; set; }
     
-    // Navigation properties
     public User? WhiteUser { get; set; }
     public User? BlackUser { get; set; }
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();

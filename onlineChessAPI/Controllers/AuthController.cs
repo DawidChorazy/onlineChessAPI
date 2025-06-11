@@ -3,7 +3,6 @@ using OnlineChessAPI.Core.DTOs;
 using OnlineChessAPI.Infrastructure.Services;
 
 namespace onlineChessAPI.Controllers;
-//cksta
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase

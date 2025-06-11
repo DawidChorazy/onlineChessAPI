@@ -10,7 +10,6 @@ public class PagedListDto<T> where T : class
     public bool HasPrevious => CurrentPage > 1;
     public bool HasNext => CurrentPage < TotalPages;
     
-    // HATEOAS links
     public Dictionary<string, string> Links { get; set; } = new Dictionary<string, string>();
 
     public PagedListDto(IEnumerable<T> items, int totalCount, int pageSize, int currentPage)

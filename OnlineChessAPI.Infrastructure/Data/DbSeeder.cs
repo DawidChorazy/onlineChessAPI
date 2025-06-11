@@ -20,11 +20,8 @@ public static class DbSeeder
         try
         {
             logger.LogInformation("Starting database seeding...");
-            
-            // Upewnij się, że baza danych jest utworzona
             await context.Database.EnsureCreatedAsync();
             
-            // Seeduj dane w odpowiedniej kolejności
             await SeedUsersAsync(context, logger);
             await SeedChessGamesFromCsvAsync(context, logger);
             await SeedCommentsAsync(context, logger);
@@ -84,7 +81,6 @@ public static class DbSeeder
         
         if (!File.Exists(csvFilePath))
         {
-            // Próbuj znaleźć plik w różnych lokalizacjach
             logger.LogWarning($"CSV file not found at: {csvFilePath}, trying alternative path");
             csvFilePath = "c:\\Users\\szymo\\RiderProjects\\onlineChessAPI\\chess_games.csv";
             
@@ -97,7 +93,6 @@ public static class DbSeeder
         
         logger.LogInformation($"Found CSV file at: {csvFilePath}");
         
-        // Pobierz użytkowników do powiązania z grami
         var users = await context.Users.ToListAsync();
         if (users.Count < 2)
         {
@@ -111,7 +106,7 @@ public static class DbSeeder
             HasHeaderRecord = true,
             HeaderValidated = null,
             MissingFieldFound = null,
-            Delimiter = ",", // Używamy przecinka jako separatora (standardowy format CSV)
+            Delimiter = ",",
         };
         
         try
@@ -119,7 +114,6 @@ public static class DbSeeder
             using (var reader = new StreamReader(csvFilePath))
             using (var csv = new CsvReader(reader, config))
             {
-                // Przeczytaj nagłówek
                 csv.Read();
                 csv.ReadHeader();
                 
@@ -132,14 +126,12 @@ public static class DbSeeder
                     {
                         var game = new ChessGame
                         {
-                            // Użyj TryGet, aby obsłużyć potencjalne braki danych
                             GameId = csv.TryGetField<int>("game_id", out var gameId) ? gameId : counter + 1,
                             Rated = csv.TryGetField<bool>("rated", out var rated) ? rated : false,
                             Turns = csv.TryGetField<int>("turns", out var turns) ? turns : 0,
                             VictoryStatus = csv.GetField<string>("victory_status"),
                             Winner = csv.GetField<string>("winner"),
                             TimeIncrement = csv.GetField<string>("time_increment"),
-                            // Przypisz użytkowników na podstawie dostępnych użytkowników w bazie danych
                             WhiteId = users[0].Id,
                             WhiteRating = csv.TryGetField<int>("white_rating", out var whiteRating) ? whiteRating : 1500,
                             BlackId = users[1].Id,
@@ -203,7 +195,6 @@ public static class DbSeeder
         
         foreach (var game in games)
         {
-            // Dodaj komentarz od zalogowanego użytkownika
             if (users.Any())
             {
                 comments.Add(new Comment
@@ -215,7 +206,6 @@ public static class DbSeeder
                 });
             }
             
-            // Dodaj anonimowy komentarz
             comments.Add(new Comment
             {
                 GameId = game.GameId,
