@@ -1,0 +1,8 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1ced5f24_002D9b00_002D4223_002Db7ae_002D74b5b0126084/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetGames_ReturnsPagedListOfGames" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::63804B90-FB41-4B4E-9A5E-D1854ADA4302::net8.0::OnlineChessAPI.Tests.Controllers.ChessGamesControllerTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::63804B90-FB41-4B4E-9A5E-D1854ADA4302::net8.0::ChessGameRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::63804B90-FB41-4B4E-9A5E-D1854ADA4302::net8.0::OnlineChessAPI.Tests.Services.TokenServiceTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
